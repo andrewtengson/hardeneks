@@ -97,7 +97,10 @@ def _export_json(rules: list, json_path=str):
             "namespace": rule.result.namespace,
             "resolution": rule.url,
         }
-        json_blob[rule._type][rule.pillar][rule.section][rule.message] = result
+        if rule._type == "namespace_based":
+            json_blob[rule._type][rule.pillar][rule.section][rule.result.namespace][rule.message] = result
+        else:
+            json_blob[rule._type][rule.pillar][rule.section][rule.message] = result
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(json_blob, f, ensure_ascii=False, indent=4)
 
